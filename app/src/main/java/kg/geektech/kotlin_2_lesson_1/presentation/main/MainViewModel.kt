@@ -1,4 +1,4 @@
-package kg.geektech.kotlin_2_lesson_1.presentation
+package kg.geektech.kotlin_2_lesson_1.presentation.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

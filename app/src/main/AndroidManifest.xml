@@ -10,13 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotlin_2_Lesson_1">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.task.TaskActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:exported="true">
         </activity>
     </application>
 

@@ -1,4 +1,4 @@
-package kg.geektech.kotlin_2_lesson_1.presentation
+package kg.geektech.kotlin_2_lesson_1.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,14 +10,13 @@ import kg.geektech.kotlin_2_lesson_1.databinding.ActivityMainBinding
 import kg.geektech.kotlin_2_lesson_1.domain.model.ShopItem
 import java.lang.Exception
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val binding: ActivityMainBinding by viewBinding()
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         initObservers()
         initListeners()
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val shopItem = viewModel.getShopItem(text.toInt())
                     Log.d("Aziz", "GetShopItem: $shopItem")
-                } catch (e: Exception) {
+                } catch (e: RuntimeException) {
                     Log.d("Aziz", "Exception: $e")
                 }
             }
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                         false,
                         binding.etForId.text.toString().toInt()
                     )
-                } catch (e:Exception) {
+                } catch (e: Exception) {
                     Log.d("Aziz", "Exception: $e")
                     ShopItem(
                         "Aziz",
