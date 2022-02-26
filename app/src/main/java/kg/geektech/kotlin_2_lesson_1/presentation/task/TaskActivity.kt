@@ -1,6 +1,7 @@
 package kg.geektech.kotlin_2_lesson_1.presentation.task
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -35,7 +36,10 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
 
     private fun setupRv() {
 //        adapter = TaskAdapter()
-        adapter = TaskListAdapter()
+        adapter = TaskListAdapter() {
+            viewModel.editShopItem(it.id)
+            Toast.makeText(this, "Shop item with id ${it.id} isEnabled: ${it.enabled}", Toast.LENGTH_SHORT).show()
+        }
         binding.rvTask.layoutManager = LinearLayoutManager(this)
         binding.rvTask.apply {
             adapter = this@TaskActivity.adapter
