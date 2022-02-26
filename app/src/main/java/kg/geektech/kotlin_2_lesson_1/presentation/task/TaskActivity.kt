@@ -17,7 +17,6 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
     private val binding: ActivityTaskBinding by viewBinding()
     private val viewModel: MainViewModel by viewModels()
 
-    //    private lateinit var adapter: TaskAdapter
     private lateinit var adapter: TaskListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +28,11 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
 
     private fun initObserve() {
         viewModel.getShopList().observe(this) {
-//            adapter.list = it
             adapter.submitList(it)
         }
     }
 
     private fun setupRv() {
-//        adapter = TaskAdapter()
         adapter = TaskListAdapter() {
             viewModel.editShopItem(it.id)
             Toast.makeText(this, "Shop item with id ${it.id} isEnabled: ${it.enabled}", Toast.LENGTH_SHORT).show()
@@ -61,7 +58,6 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                val item = adapter.list[viewHolder.absoluteAdapterPosition]
                 val item = adapter.currentList[viewHolder.absoluteAdapterPosition]
                 viewModel.deleteShopItem(item)
             }
