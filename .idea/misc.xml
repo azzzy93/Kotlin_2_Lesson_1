@@ -3,10 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/Kotlin_2_Lesson_1/app/src/main/res/drawable-anydpi/ic_search.xml" value="0.209" />
+        <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/Kotlin_2_Lesson_1/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.209" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/Kotlin_2_Lesson_1/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/Kotlin_2_Lesson_1/app/src/main/res/layout/activity_task.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/Kotlin_2_Lesson_1/app/src/main/res/layout/shop_list_disabled.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/Kotlin_2_Lesson_1/app/src/main/res/layout/shop_list_enabled.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Azzzy93/AndroidStudioProjects/Kotlin_2_Lesson_1/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

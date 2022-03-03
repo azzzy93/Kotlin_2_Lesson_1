@@ -1,15 +1,19 @@
 package kg.geektech.kotlin_2_lesson_1.presentation.task
 
 import android.os.Bundle
+import android.text.InputType
+import android.view.Menu
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kg.geektech.kotlin_2_lesson_1.R
 import kg.geektech.kotlin_2_lesson_1.databinding.ActivityTaskBinding
+import kg.geektech.kotlin_2_lesson_1.presentation.main.MainActivity
 import kg.geektech.kotlin_2_lesson_1.presentation.main.MainViewModel
 
 class TaskActivity : AppCompatActivity(R.layout.activity_task) {
@@ -24,6 +28,58 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
 
         setupRv()
         initObserve()
+        initListeners()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        val menuItem = menu.findItem(R.id.search_tool_bar)
+        val searchView = menuItem.actionView as SearchView
+        searchView.queryHint = "Enter ID to search"
+        searchView.inputType = InputType.TYPE_CLASS_NUMBER
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.toInt()?.let {
+                    try {
+                        Toast.makeText(
+                            this@TaskActivity,
+                            viewModel.getShopItem(it).toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@TaskActivity,
+                            e.localizedMessage,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun initListeners() {
+        adapter.onShopItemClick = {
+            Toast.makeText(
+                applicationContext,
+                "Shop item with id ${it.id} isEnabled: ${it.enabled}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        adapter.onShopItemLongClick = {
+            viewModel.editShopItem(it)
+        }
+        binding.fab.setOnClickListener {
+            MainActivity.start(this)
+        }
     }
 
     private fun initObserve() {
@@ -33,12 +89,9 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
     }
 
     private fun setupRv() {
-        adapter = TaskListAdapter() {
-            viewModel.editShopItem(it.id)
-            Toast.makeText(this, "Shop item with id ${it.id} isEnabled: ${it.enabled}", Toast.LENGTH_SHORT).show()
-        }
-        binding.rvTask.layoutManager = LinearLayoutManager(this)
+        adapter = TaskListAdapter()
         binding.rvTask.apply {
+            layoutManager = LinearLayoutManager(this@TaskActivity)
             adapter = this@TaskActivity.adapter
             setUpSwipeListener(this)
         }

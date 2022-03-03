@@ -2,7 +2,7 @@ package kg.geektech.kotlin_2_lesson_1.presentation.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import kg.geektech.kotlin_2_lesson_1.data.ShopListRepositoryImpl
+import kg.geektech.kotlin_2_lesson_1.data.repository.ShopListRepositoryImpl
 import kg.geektech.kotlin_2_lesson_1.domain.*
 import kg.geektech.kotlin_2_lesson_1.domain.model.ShopItem
 
@@ -34,7 +34,8 @@ class MainViewModel : ViewModel() {
         return getShopItemUseCase.getShopItem(id)
     }
 
-    fun editShopItem(id: Int) {
-        editShopItemUseCase.editShopItem(id)
+    fun editShopItem(shopItem: ShopItem) {
+        val newShopItem = shopItem.copy(enabled = !shopItem.enabled)
+        editShopItemUseCase.editShopItem(newShopItem)
     }
 }

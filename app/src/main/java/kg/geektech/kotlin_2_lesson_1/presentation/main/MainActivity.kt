@@ -1,14 +1,15 @@
 package kg.geektech.kotlin_2_lesson_1.presentation.main
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kg.geektech.kotlin_2_lesson_1.R
 import kg.geektech.kotlin_2_lesson_1.databinding.ActivityMainBinding
 import kg.geektech.kotlin_2_lesson_1.domain.model.ShopItem
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -45,7 +46,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             val text = binding.etForId.text.toString()
             if (text.isNotBlank()) {
                 try {
-                    viewModel.editShopItem(text.toInt())
+                    val shopItem = viewModel.getShopItem(text.toInt())
+                    viewModel.editShopItem(shopItem)
                     Log.d("Aziz", "EditShopItem")
                 } catch (e: Exception) {
                     Log.d("Aziz", "Exception: $e")
@@ -59,23 +61,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         binding.btnDeleteItem.setOnClickListener {
-            viewModel.deleteShopItem(
-                try {
-                    ShopItem(
-                        "Aziz",
-                        2,
-                        false,
-                        binding.etForId.text.toString().toInt()
-                    )
-                } catch (e: Exception) {
-                    Log.d("Aziz", "Exception: $e")
-                    ShopItem(
-                        "Aziz",
-                        2,
-                        false
-                    )
-                }
-            )
+            try {
+                val shopItem = viewModel.getShopItem(binding.etForId.text.toString().toInt())
+                viewModel.deleteShopItem(shopItem)
+            } catch (e: Exception) {
+                Log.d("Aziz", "Exception: $e")
+            }
         }
     }
 
@@ -90,6 +81,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 Log.d("Aziz", "Exception: $e")
                 ShopItem("Aziz", 2, false)
             }
+        }
+    }
+
+    companion object {
+        fun start(context: Context) {
+            context.startActivity(Intent(context, MainActivity::class.java))
         }
     }
 }
