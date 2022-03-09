@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotlin_2_Lesson_1">
         <activity
+            android:name=".presentation.detail.DetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.task.TaskActivity"
             android:exported="true">
             <intent-filter>
@@ -21,8 +24,7 @@
         </activity>
         <activity
             android:name=".presentation.main.MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

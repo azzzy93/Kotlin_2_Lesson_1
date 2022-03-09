@@ -10,7 +10,6 @@ class App : Application() {
         super.onCreate()
 
         dataBase = Room.databaseBuilder(this, AppDataBase::class.java, "dataBase")
-            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
     }

@@ -1,10 +1,12 @@
-package kg.geektech.kotlin_2_lesson_1.presentation.main
+package kg.geektech.kotlin_2_lesson_1.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kg.geektech.kotlin_2_lesson_1.data.repository.ShopListRepositoryImpl
 import kg.geektech.kotlin_2_lesson_1.domain.*
 import kg.geektech.kotlin_2_lesson_1.domain.model.ShopItem
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
@@ -16,26 +18,30 @@ class MainViewModel : ViewModel() {
     private val getShopItemUseCase = GetShopItemUseCase(repository)
     private val editShopItemUseCase = EditShopItemUseCase(repository)
 
-    private val shopList = getShopListUseCase.getShopList()
-
     fun addShopItem(shopItem: ShopItem) {
-        addShopItemUseCase.addShopItem(shopItem)
+        viewModelScope.launch {
+            addShopItemUseCase.addShopItem(shopItem)
+        }
     }
 
     fun getShopList(): LiveData<List<ShopItem>> {
-        return shopList
+        return getShopListUseCase.getShopList()
     }
 
     fun deleteShopItem(shopItem: ShopItem) {
-        deleteShopItemUseCase.deleteShopItem(shopItem)
+        viewModelScope.launch {
+            deleteShopItemUseCase.deleteShopItem(shopItem)
+        }
     }
 
-    fun getShopItem(id: Int): ShopItem {
+    suspend fun getShopItem(id: Int): ShopItem {
         return getShopItemUseCase.getShopItem(id)
     }
 
     fun editShopItem(shopItem: ShopItem) {
         val newShopItem = shopItem.copy(enabled = !shopItem.enabled)
-        editShopItemUseCase.editShopItem(newShopItem)
+        viewModelScope.launch {
+            editShopItemUseCase.editShopItem(newShopItem)
+        }
     }
 }

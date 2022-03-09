@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kg.geektech.kotlin_2_lesson_1.R
 import kg.geektech.kotlin_2_lesson_1.databinding.ActivityMainBinding
 import kg.geektech.kotlin_2_lesson_1.domain.model.ShopItem
+import kg.geektech.kotlin_2_lesson_1.presentation.MainViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -34,8 +37,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             val text = binding.etForId.text.toString()
             if (text.isNotBlank()) {
                 try {
-                    val shopItem = viewModel.getShopItem(text.toInt())
-                    Log.d("Aziz", "GetShopItem: $shopItem")
+                    lifecycleScope.launch {
+                        val shopItem = viewModel.getShopItem(text.toInt())
+                        Log.d("Aziz", "GetShopItem: $shopItem")
+                    }
                 } catch (e: RuntimeException) {
                     Log.d("Aziz", "Exception: $e")
                 }
@@ -46,9 +51,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             val text = binding.etForId.text.toString()
             if (text.isNotBlank()) {
                 try {
-                    val shopItem = viewModel.getShopItem(text.toInt())
-                    viewModel.editShopItem(shopItem)
-                    Log.d("Aziz", "EditShopItem")
+                    lifecycleScope.launch {
+                        val shopItem = viewModel.getShopItem(text.toInt())
+                        viewModel.editShopItem(shopItem)
+                        Log.d("Aziz", "EditShopItem")
+                    }
                 } catch (e: Exception) {
                     Log.d("Aziz", "Exception: $e")
                 }
@@ -62,8 +69,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         binding.btnDeleteItem.setOnClickListener {
             try {
-                val shopItem = viewModel.getShopItem(binding.etForId.text.toString().toInt())
-                viewModel.deleteShopItem(shopItem)
+                lifecycleScope.launch {
+                    val shopItem = viewModel.getShopItem(binding.etForId.text.toString().toInt())
+                    viewModel.deleteShopItem(shopItem)
+                }
             } catch (e: Exception) {
                 Log.d("Aziz", "Exception: $e")
             }

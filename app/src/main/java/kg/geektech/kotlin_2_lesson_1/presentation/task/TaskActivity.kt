@@ -7,14 +7,16 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kg.geektech.kotlin_2_lesson_1.R
 import kg.geektech.kotlin_2_lesson_1.databinding.ActivityTaskBinding
-import kg.geektech.kotlin_2_lesson_1.presentation.main.MainActivity
-import kg.geektech.kotlin_2_lesson_1.presentation.main.MainViewModel
+import kg.geektech.kotlin_2_lesson_1.presentation.detail.DetailActivity
+import kg.geektech.kotlin_2_lesson_1.presentation.MainViewModel
+import kotlinx.coroutines.launch
 
 class TaskActivity : AppCompatActivity(R.layout.activity_task) {
 
@@ -41,11 +43,13 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.toInt()?.let {
                     try {
-                        Toast.makeText(
-                            this@TaskActivity,
-                            viewModel.getShopItem(it).toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        lifecycleScope.launch {
+                            Toast.makeText(
+                                this@TaskActivity,
+                                viewModel.getShopItem(it).toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     } catch (e: Exception) {
                         Toast.makeText(
                             this@TaskActivity,
@@ -62,7 +66,6 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
             }
 
         })
-
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -78,7 +81,7 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
             viewModel.editShopItem(it)
         }
         binding.fab.setOnClickListener {
-            MainActivity.start(this)
+            DetailActivity.start(this)
         }
     }
 
