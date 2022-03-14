@@ -1,16 +1,18 @@
 package kg.geektech.kotlin_2_lesson_1.presentation
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kg.geektech.kotlin_2_lesson_1.data.repository.ShopListRepositoryImpl
 import kg.geektech.kotlin_2_lesson_1.domain.*
 import kg.geektech.kotlin_2_lesson_1.domain.model.ShopItem
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-
-    private val repository = ShopListRepositoryImpl()
+@HiltViewModel
+class MainViewModel @Inject constructor(private val repository: ShopListRepositoryImpl): ViewModel() {
 
     private val addShopItemUseCase = AddShopItemUseCase(repository)
     private val getShopListUseCase = GetShopListUseCase(repository)
@@ -34,8 +36,12 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    suspend fun getShopItem(id: Int): ShopItem {
-        return getShopItemUseCase.getShopItem(id)
+    fun getShopItem(id: Int): LiveData<ShopItem> {
+        val shopItem: MutableLiveData<ShopItem> = MutableLiveData()
+        viewModelScope.launch {
+            shopItem.postValue(getShopItemUseCase.getShopItem(id))
+        }
+        return shopItem
     }
 
     fun editShopItem(shopItem: ShopItem) {

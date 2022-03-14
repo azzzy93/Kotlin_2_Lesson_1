@@ -7,17 +7,17 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.kotlin_2_lesson_1.R
 import kg.geektech.kotlin_2_lesson_1.databinding.ActivityTaskBinding
-import kg.geektech.kotlin_2_lesson_1.presentation.detail.DetailActivity
 import kg.geektech.kotlin_2_lesson_1.presentation.MainViewModel
-import kotlinx.coroutines.launch
+import kg.geektech.kotlin_2_lesson_1.presentation.detail.DetailActivity
 
+@AndroidEntryPoint
 class TaskActivity : AppCompatActivity(R.layout.activity_task) {
 
     private val binding: ActivityTaskBinding by viewBinding()
@@ -41,12 +41,12 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
         searchView.inputType = InputType.TYPE_CLASS_NUMBER
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.toInt()?.let {
+                query?.toInt()?.let { id ->
                     try {
-                        lifecycleScope.launch {
+                        viewModel.getShopItem(id).observe(this@TaskActivity) { shopItem ->
                             Toast.makeText(
                                 this@TaskActivity,
-                                viewModel.getShopItem(it).toString(),
+                                shopItem.toString(),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -64,7 +64,6 @@ class TaskActivity : AppCompatActivity(R.layout.activity_task) {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
-
         })
         return super.onCreateOptionsMenu(menu)
     }

@@ -6,11 +6,13 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.kotlin_2_lesson_1.R
 import kg.geektech.kotlin_2_lesson_1.databinding.ActivityDetailBinding
 import kg.geektech.kotlin_2_lesson_1.domain.model.ShopItem
 import kg.geektech.kotlin_2_lesson_1.presentation.MainViewModel
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity(R.layout.activity_detail) {
 
     private val binding: ActivityDetailBinding by viewBinding()

@@ -8,12 +8,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kg.geektech.kotlin_2_lesson_1.R
 import kg.geektech.kotlin_2_lesson_1.databinding.ActivityMainBinding
 import kg.geektech.kotlin_2_lesson_1.domain.model.ShopItem
 import kg.geektech.kotlin_2_lesson_1.presentation.MainViewModel
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val binding: ActivityMainBinding by viewBinding()
@@ -51,9 +53,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             val text = binding.etForId.text.toString()
             if (text.isNotBlank()) {
                 try {
-                    lifecycleScope.launch {
-                        val shopItem = viewModel.getShopItem(text.toInt())
-                        viewModel.editShopItem(shopItem)
+                    viewModel.getShopItem(binding.etForId.text.toString().toInt()).observe(this) {
+                        viewModel.editShopItem(it)
                         Log.d("Aziz", "EditShopItem")
                     }
                 } catch (e: Exception) {
@@ -69,9 +70,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         binding.btnDeleteItem.setOnClickListener {
             try {
-                lifecycleScope.launch {
-                    val shopItem = viewModel.getShopItem(binding.etForId.text.toString().toInt())
-                    viewModel.deleteShopItem(shopItem)
+                viewModel.getShopItem(binding.etForId.text.toString().toInt()).observe(this) {
+                    viewModel.deleteShopItem(it)
                 }
             } catch (e: Exception) {
                 Log.d("Aziz", "Exception: $e")
